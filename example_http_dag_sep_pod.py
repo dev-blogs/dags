@@ -40,7 +40,7 @@ with DAG(
         is_delete_operator_pod=True,             # Deletes pod after task completion
         get_logs=True,                           # Fetches pod logs in Airflow UI
         container_resources=V1ResourceRequirements(
-            requests={"cpu": "500m", "memory": "256Mi"},
-            limits={"cpu": "1", "memory": "512Mi"}
+            requests={"cpu": "250m", "memory": "256Mi"},
+            limits={"cpu": "500m", "memory": "512Mi"}
         ),
     )
