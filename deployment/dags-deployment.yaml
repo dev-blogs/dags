@@ -11,6 +11,8 @@ spec:
       labels:
         app: dags-deploy
     spec:
+      imagePullSecrets:
+        - name: docker-hub-password
       containers:
         - name: dags-deploy
           image: devblogs1/dags-deployer-image-with-rsync:latest
