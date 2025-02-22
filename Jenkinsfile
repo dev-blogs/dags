@@ -15,7 +15,6 @@ pipeline {
     SERVICE_NAME="dags-deploy"
     DOCKER_IMAGE="${DOCKER_HUB_LOGIN}/${SERVICE_NAME}"
     NAMESPACE="image-uploader"
-    DOCKER_CREDENTIALS_ID = 'docker-hub-secret'
     DOCKER_HUB_PASSWORD_SECRET="docker-hub-password"
     OS_HOST="https://ocp1.192.168.1.20.nip.io:8443"
     OS_USER="dev"
@@ -23,15 +22,6 @@ pipeline {
   }
 
   stages {
-    stage('Login to Docker Hub') {
-      steps {
-        script {
-          withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-            sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-          }
-        }
-      }
-    }
 		
     stage('Image build') {
       steps {
