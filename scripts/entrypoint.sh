@@ -1,3 +1,7 @@
 #!/bin/bash
 
-rsync dags/* /opt/airflow/dags/
+src=dags/*
+dst=/opt/airflow/dags/
+
+rsync $src $dst
+echo "Dags from $src dir was successfully synchronized with $dst"
