@@ -2,7 +2,6 @@ from airflow import DAG
 from datetime import datetime
 from airflow.operators.bash import BashOperator
 
-# Define default_args
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
@@ -11,12 +10,11 @@ default_args = {
     'retries': 0,
 }
 
-# Define the DAG
 with DAG(
     dag_id='example_http_dag',
     default_args=default_args,
     description='An example DAG to call an HTTP endpoint',
-    schedule_interval=None,  # Set to None for manual triggering
+    schedule_interval=None,
     start_date=datetime(2024, 1, 1),  # Adjust to your preferred start date
     catchup=False,
     tags=['example', 'http']

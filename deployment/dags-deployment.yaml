@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dags-deployer-image-with-rsync
+spec:
+  replicas: 1
+  selector:
+    app: dags-deployer-image-with-rsync
+  template:
+    metadata:
+      labels:
+        app: dags-deployer-image-with-rsync
+    spec:
+      containers:
+        - name: dags-deployer-image-with-rsync
+          image: devblogs1/dags-deployer-image-with-rsync:latest
+          volumeMounts:
+            - name: airflow-dags-volume
+              mountPath: /opt/airflow/dags
+      volumes:
+        - name: airflow-dags-volume
+          persistentVolumeClaim:
+            claimName: dag-pvc
+      restartPolicy: Never
