@@ -7,7 +7,7 @@ spec:
   nodeSelector:
     beta.kubernetes.io/os: linux
   imagePullSecrets:
-    - name: docker-hub-secret
+    - name: docker-hub-password
   containers:
     - name: jnlp
       image: 'jenkins/inbound-agent:4.13.2-1-jdk11'

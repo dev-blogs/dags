@@ -15,7 +15,7 @@ pipeline {
     SERVICE_NAME="dags-deploy"
     DOCKER_IMAGE="${DOCKER_HUB_LOGIN}/${SERVICE_NAME}"
     NAMESPACE="image-uploader"
-    DOCKER_HUB_PASSWORD_SECRET="docker-hub-password"
+    DOCKER_HUB_SECRET="docker-hub-password"
     OS_HOST="https://ocp1.192.168.1.20.nip.io:8443"
     OS_USER="dev"
     OS_PASSWORD="dev"
@@ -55,7 +55,12 @@ pipeline {
 }
 
 def build_image() {
-  sh "docker build -t ${SERVICE_NAME} ."
+  sh '''
+    /usr/bin/oc login --insecure-skip-tls-verify --config=${CONFIG} -u ${OS_USER} -p ${OS_PASSWORD} ${OS_HOST}
+    /usr/bin/oc get secret ${DOCKER_HUB_SECRET} --config=${CONFIG} -n ${NAMESPACE} -o go-template --template="{{.data.password}}" | base64 -d | docker login -u ${DOCKER_HUB_LOGIN} --password-stdin
+  
+    docker build -t ${SERVICE_NAME} .
+  '''
 }
 
 def deploy_image() {
@@ -63,7 +68,7 @@ def deploy_image() {
   export DOCKER_CONFIG=/tmp/docker-config
   
   /usr/bin/oc login --insecure-skip-tls-verify --config=${CONFIG} -u ${OS_USER} -p ${OS_PASSWORD} ${OS_HOST}
-  /usr/bin/oc get secret ${DOCKER_HUB_PASSWORD_SECRET} --config=${CONFIG} -n ${NAMESPACE} -o go-template --template="{{.data.password}}" | base64 -d | docker login -u ${DOCKER_HUB_LOGIN} --password-stdin
+  /usr/bin/oc get secret ${DOCKER_HUB_SECRET} --config=${CONFIG} -n ${NAMESPACE} -o go-template --template="{{.data.password}}" | base64 -d | docker login -u ${DOCKER_HUB_LOGIN} --password-stdin
   
   docker tag ${SERVICE_NAME} ${DOCKER_HUB_LOGIN}/${SERVICE_NAME}
   docker push ${DOCKER_HUB_LOGIN}/${SERVICE_NAME}
