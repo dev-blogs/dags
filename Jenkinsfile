@@ -57,7 +57,9 @@ def build_image() {
     export DOCKER_CONFIG=/tmp/docker-config
 	
     /usr/bin/oc login --insecure-skip-tls-verify --config=${CONFIG} -u ${OS_USER} -p ${OS_PASSWORD} ${OS_HOST}
-    /usr/bin/oc get secret ${DOCKER_HUB_SECRET} --config=${CONFIG} -n ${NAMESPACE} -o go-template --template="{{.data.password}}" | base64 -d | docker login -u ${DOCKER_HUB_LOGIN} --password-stdin
+    /usr/bin/oc get secret ${DOCKER_HUB_SECRET} --config=${CONFIG} -n ${NAMESPACE} -o go-template --template="{{.data.password}}" |\
+    base64 -d |\
+    docker login -u ${DOCKER_HUB_LOGIN} --password-stdin
 
     docker build -t ${SERVICE_NAME} .
   '''
@@ -68,7 +70,9 @@ def deploy_image() {
   export DOCKER_CONFIG=/tmp/docker-config
 
   /usr/bin/oc login --insecure-skip-tls-verify --config=${CONFIG} -u ${OS_USER} -p ${OS_PASSWORD} ${OS_HOST}
-  /usr/bin/oc get secret ${DOCKER_HUB_SECRET} --config=${CONFIG} -n ${NAMESPACE} -o go-template --template="{{.data.password}}" | base64 -d | docker login -u ${DOCKER_HUB_LOGIN} --password-stdin
+  /usr/bin/oc get secret ${DOCKER_HUB_SECRET} --config=${CONFIG} -n ${NAMESPACE} -o go-template --template="{{.data.password}}" |\
+  base64 -d |\
+  docker login -u ${DOCKER_HUB_LOGIN} --password-stdin
 
   docker tag ${SERVICE_NAME} ${DOCKER_HUB_LOGIN}/${SERVICE_NAME}
   docker push ${DOCKER_HUB_LOGIN}/${SERVICE_NAME}
