@@ -84,14 +84,6 @@ def deploy_image() {
       echo "Deployment ${SERVICE_NAME} does not exist. New deployment will be created."
   fi
   
-  # Check if the route exists
-  if /usr/bin/oc get route --config=${CONFIG} ${SERVICE_NAME} -n ${NAMESPACE} > /dev/null 2>&1; then
-      echo "Route ${SERVICE_NAME} exists. Replacing it with the new route."
-      /usr/bin/oc delete route ${SERVICE_NAME} -n ${NAMESPACE} --config=${CONFIG}
-  else
-      echo "Route ${SERVICE_NAME} does not exist. New route will be created."
-  fi
-  
   # Check if the imagestream exists
   if /usr/bin/oc get imagestream --config=${CONFIG} ${SERVICE_NAME} -n ${NAMESPACE} > /dev/null 2>&1; then
       echo "Imagestream ${SERVICE_NAME} exists. Replacing it with the new imagestream."
