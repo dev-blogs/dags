@@ -102,7 +102,7 @@ def deploy_image() {
   # Deploy the application
   /usr/bin/oc new-app --docker-image=${DOCKER_IMAGE} --name=${SERVICE_NAME} -n ${NAMESPACE} --config=${CONFIG}
   # Attach pv to container
-  SERVICE_ACCOUNT_TOKEN=$(/usr/bin/oc serviceaccounts get-token ${SERVICE_ACCOUNT} -n ${NAMESPACE})
+  eval "SERVICE_ACCOUNT_TOKEN=\$(/usr/bin/oc serviceaccounts get-token ${SERVICE_ACCOUNT} -n ${NAMESPACE})"
   /usr/bin/oc login --token=$SERVICE_ACCOUNT_TOKEN
   /usr/bin/oc set volume deployment/${SERVICE_NAME} --add --name=airflow-dags-volume --mount-path=/pvc/airflow/dags --claim-name=dag-pvc
   
