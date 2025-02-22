@@ -21,15 +21,6 @@ pipeline {
   }
 
   stages {
-    stage('Checkout') {
-      steps {
-        container('java-container') {
-          sh 'ls -la'
-          sh 'git clone https://github.com/dev-blogs/dags.git'
-        }
-      }
-    }
-
     stage('Deploy') {
       steps {
         container('java-container') {
