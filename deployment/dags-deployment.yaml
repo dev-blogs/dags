@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dags-deploy
+  namespace: image-uploader
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dags-deploy
+  template:
+    metadata:
+      labels:
+        app: dags-deploy
+    spec:
+      containers:
+        - name: dags-deploy
+          image: devblogs1/dags-deployer-image:1.0
+          volumeMounts:
+            - name: airflow-dags-volume
+              mountPath: /pvc/airflow/dags
+      volumes:
+        - name: airflow-dags-volume
+          persistentVolumeClaim:
+            claimName: dag-pvc
