@@ -35,5 +35,4 @@ with DAG(
         bash_command='curl -X GET "http://test-app-image-uploader.apps.192.168.1.21.nip.io/test" -H "Content-Type: application/json"',
     )
 
-    # Add additional tasks or dependencies here if needed
     [api_call_task_1, api_call_task_2, api_call_task_3]
