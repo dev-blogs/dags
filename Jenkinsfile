@@ -93,6 +93,14 @@ def deploy_image() {
       echo "Imagestream ${SERVICE_NAME} does not exist. New imagestream will be created."
   fi
 
+  # Check if the job exists
+  if /usr/bin/oc get jobs --config=${CONFIG} ${SERVICE_NAME} -n ${NAMESPACE} > /dev/null 2>&1; then
+    echo "Job ${SERVICE_NAME} exists. Replacing it with the new job."
+    /usr/bin/oc delete job ${SERVICE_NAME} -n ${NAMESPACE} --config=${CONFIG}
+  else
+    echo "Job ${SERVICE_NAME} does not exist. New job will be created."
+  fi
+
   # Deploy the application
   /usr/bin/oc apply -f deployment/dags-deployment.yaml
 
