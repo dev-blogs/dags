@@ -15,7 +15,7 @@ with DAG(
     default_args=default_args,
     description='An example DAG to call an HTTP endpoint',
     schedule_interval=None,
-    start_date=datetime(2024, 1, 1),  # Adjust to your preferred start date
+    start_date=datetime(2024, 1, 1),
     catchup=False,
     tags=['example', 'http']
 ) as dag:
