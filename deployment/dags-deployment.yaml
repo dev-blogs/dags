@@ -21,4 +21,4 @@ spec:
         - name: airflow-dags-volume
           persistentVolumeClaim:
             claimName: dag-pvc
-      restartPolicy: Never
+      restartPolicy: None
