@@ -27,9 +27,7 @@ pipeline {
       steps {
         container('java-container') {
           sh "ls -la"
-          dir ('{$WORKING_DIR}') {
-            build_image()
-          }
+          build_image()
         }
       }
     }
@@ -58,6 +56,8 @@ pipeline {
 
 def build_image() {
   sh '''
+    export DOCKER_CONFIG=/tmp/docker-config
+	
     /usr/bin/oc login --insecure-skip-tls-verify --config=${CONFIG} -u ${OS_USER} -p ${OS_PASSWORD} ${OS_HOST}
     /usr/bin/oc get secret ${DOCKER_HUB_SECRET} --config=${CONFIG} -n ${NAMESPACE} -o go-template --template="{{.data.password}}" | base64 -d | docker login -u ${DOCKER_HUB_LOGIN} --password-stdin
 
@@ -67,6 +67,8 @@ def build_image() {
 
 def deploy_image() {
   sh '''
+  export DOCKER_CONFIG=/tmp/docker-config
+
   /usr/bin/oc login --insecure-skip-tls-verify --config=${CONFIG} -u ${OS_USER} -p ${OS_PASSWORD} ${OS_HOST}
   /usr/bin/oc get secret ${DOCKER_HUB_SECRET} --config=${CONFIG} -n ${NAMESPACE} -o go-template --template="{{.data.password}}" | base64 -d | docker login -u ${DOCKER_HUB_LOGIN} --password-stdin
 
