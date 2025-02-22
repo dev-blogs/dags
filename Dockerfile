@@ -1,4 +1,4 @@
-FROM devblogs1/dag-deployer-image:1.0
+FROM devblogs1/dags-deployer-image:1.0
 
 RUN mkdir -p /usr/src/dags
 RUN mkdir -p /usr/src/scripts
