@@ -21,10 +21,20 @@ pipeline {
   }
 
   stages {
+    stage('Image build') {
+      steps {
+        container('java-container') {
+          dir ('{$WORKING_DIR}') {
+            build_image()
+          }
+        }
+      }
+    }
+
     stage('Deploy') {
       steps {
         container('java-container') {
-          dir ('${WORKING_DIR}') {
+          dir ('{$WORKING_DIR}') {
             deploy_image()
           }
         }
@@ -34,7 +44,7 @@ pipeline {
     stage('Check') {
       steps {
         container('java-container') {
-          dir ('${WORKING_DIR}') {
+          dir ('{$WORKING_DIR}') {
             sh "ls -la"
           }
         }
