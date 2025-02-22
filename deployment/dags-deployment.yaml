@@ -16,7 +16,7 @@ spec:
           image: devblogs1/dags-deployer-image:1.0
           volumeMounts:
             - name: airflow-dags-volume
-              mountPath: /pvc/airflow/dags
+              mountPath: /opt/airflow/dags
       volumes:
         - name: airflow-dags-volume
           persistentVolumeClaim:
