@@ -10,7 +10,6 @@ default_args = {
     'retries': 0,
 }
 
-# Define the DAG
 with DAG(
     dag_id='example_http_dag',
     default_args=default_args,
