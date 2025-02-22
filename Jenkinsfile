@@ -24,9 +24,8 @@ pipeline {
     stage('Image build') {
       steps {
         container('java-container') {
-          dir ('{$WORKING_DIR}') {
-            build_image()
-          }
+          sh "ls -la"
+          build_image()
         }
       }
     }
