@@ -62,6 +62,9 @@ def deploy_image() {
   export DOCKER_CONFIG=/tmp/docker-config
   
   /usr/bin/oc login --insecure-skip-tls-verify --config=${CONFIG} -u ${OS_USER} -p ${OS_PASSWORD} ${OS_HOST}
+  /usr/bin/oc serviceaccounts get-token ${SERVICE_ACCOUNT} -n ${NAMESPACE} > /tmp/token_file
+  SERVICE_ACCOUNT_TOKEN=$(cat /tmp/token_file)
+  
   /usr/bin/oc get secret ${DOCKER_HUB_PASSWORD_SECRET} --config=${CONFIG} -n ${NAMESPACE} -o go-template --template="{{.data.password}}" | base64 -d | docker login -u ${DOCKER_HUB_LOGIN} --password-stdin
   
   docker tag ${SERVICE_NAME} ${DOCKER_HUB_LOGIN}/${SERVICE_NAME}
@@ -102,8 +105,6 @@ def deploy_image() {
   # Deploy the application
   /usr/bin/oc new-app --docker-image=${DOCKER_IMAGE} --name=${SERVICE_NAME} -n ${NAMESPACE} --config=${CONFIG}
   # Attach pv to container
-  /usr/bin/oc serviceaccounts get-token ${SERVICE_ACCOUNT} -n ${NAMESPACE} > /tmp/token_file
-  SERVICE_ACCOUNT_TOKEN=$(cat /tmp/token_file)
   /usr/bin/oc login --token=$SERVICE_ACCOUNT_TOKEN
   /usr/bin/oc set volume deployment/${SERVICE_NAME} --add --name=airflow-dags-volume --mount-path=/pvc/airflow/dags --claim-name=dag-pvc
   
