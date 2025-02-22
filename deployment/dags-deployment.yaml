@@ -1,13 +1,11 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: DeploymentConfig
 metadata:
   name: dags-deploy
-  namespace: image-uploader
 spec:
   replicas: 1
   selector:
-    matchLabels:
-      app: dags-deploy
+    app: dags-deploy
   template:
     metadata:
       labels:
