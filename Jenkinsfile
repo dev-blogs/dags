@@ -21,8 +21,6 @@ pipeline {
     OS_PASSWORD="dev"
   }
 
-  stages {
-
     stage('Image build') {
       steps {
         container('java-container') {
