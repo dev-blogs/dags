@@ -10,6 +10,7 @@ pipeline {
   environment {
     WORKING_DIR='dags'
     CONFIG="/tmp/config"
+	SERVICE_ACCOUNT='airflow-ca'
     DOCKER_HUB_LOGIN="devblogs1"
     SERVICE_NAME="dags-deploy"
     DOCKER_IMAGE="${DOCKER_HUB_LOGIN}/${SERVICE_NAME}"
@@ -24,7 +25,7 @@ pipeline {
     stage('Image build') {
       steps {
         container('java-container') {
-          sh "ls -la"
+		  sh "ls -la"
           build_image()
         }
       }
@@ -100,8 +101,9 @@ def deploy_image() {
   
   # Deploy the application
   /usr/bin/oc new-app --docker-image=${DOCKER_IMAGE} --name=${SERVICE_NAME} -n ${NAMESPACE} --config=${CONFIG}
-          # Attach pv to container
-          /usr/bin/oc set volume deployment/${SERVICE_NAME} --add --name=airflow-dags-volume --mount-path=/pvc/airflow/dags --claim-name=dag-pvc
+  # Attach pv to container
+  /usr/bin/oc login --token=$(oc serviceaccounts get-token airflow-ca -n ${NAMESPACE})
+  /usr/bin/oc set volume deployment/${SERVICE_NAME} --add --name=airflow-dags-volume --mount-path=/pvc/airflow/dags --claim-name=dag-pvc
   
   # Expose the service (if needed)
   if ! /usr/bin/oc get route ${SERVICE_NAME} -n ${NAMESPACE} --config=${CONFIG} > /dev/null 2>&1; then
