@@ -8,4 +8,4 @@ WORKDIR /usr/src
 COPY dags/* /usr/src/dags/
 COPY scripts/* /usr/src/scripts/
 
-CMD ["sh", "entrypoint.sh"]
+CMD ["sh", "scripts/entrypoint.sh"]

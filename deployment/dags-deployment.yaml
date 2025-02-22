@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: dags-deploy
-          image: devblogs1/dags-deployer-image:1.0
+          image: devblogs1/dags-deploy:latest
           volumeMounts:
             - name: airflow-dags-volume
               mountPath: /opt/airflow/dags
