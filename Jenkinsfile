@@ -12,7 +12,7 @@ pipeline {
     CONFIG="/tmp/config"
     SERVICE_ACCOUNT='airflow-ca'
     DOCKER_HUB_LOGIN="devblogs1"
-    SERVICE_NAME="dags-deploy"
+    SERVICE_NAME="dags-deployer-image-with-rsync"
     DOCKER_IMAGE="${DOCKER_HUB_LOGIN}/${SERVICE_NAME}"
     NAMESPACE="image-uploader"
     DOCKER_HUB_SECRET="docker-hub-password"
