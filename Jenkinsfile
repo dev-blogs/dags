@@ -93,10 +93,7 @@ def deploy_image() {
   fi
   
   # Deploy the application
-  /usr/bin/oc new-app --docker-image=${DOCKER_IMAGE} --name=${SERVICE_NAME} -n ${NAMESPACE} --config=${CONFIG}
-  # Attach pv to container
-  /usr/bin/oc login --insecure-skip-tls-verify --token=$(/usr/bin/oc serviceaccounts get-token ${SERVICE_ACCOUNT} -n ${NAMESPACE}) --config=${CONFIG} ${OS_HOST}
-  /usr/bin/oc set volume deployment/${SERVICE_NAME} --add --name=airflow-dags-volume --mount-path=/pvc/airflow/dags --claim-name=dag-pvc
+  /usr/bin/oc apply -f deployment/dags-deployment.yaml
   
   echo "Deployment complete"
   '''
