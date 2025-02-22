@@ -35,9 +35,7 @@ pipeline {
     stage('Deploy') {
       steps {
         container('java-container') {
-          dir ('{$WORKING_DIR}') {
-            deploy_image()
-          }
+          deploy_image()
         }
       }
     }
