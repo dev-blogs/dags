@@ -20,7 +20,6 @@ with DAG(
     tags=['example', 'http']
 ) as dag:
 
-    # Define the task to call the HTTP endpoint
     api_call_task_1 = BashOperator(
         task_id='call_rest_api_1',
         bash_command='curl -X GET "http://test-app-image-uploader.apps.192.168.1.21.nip.io/test" -H "Content-Type: application/json"',
