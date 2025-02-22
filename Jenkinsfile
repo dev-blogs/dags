@@ -94,8 +94,7 @@ def deploy_image() {
   fi
 
   # Deploy the application
-  /usr/bin/oc new-app --docker-image=${DOCKER_IMAGE} --name=${SERVICE_NAME} -n ${NAMESPACE} --config=${CONFIG}
-  #/usr/bin/oc apply -f deployment/dags-deployment.yaml
+  /usr/bin/oc apply -f deployment/dags-deployment.yaml
 
   echo "Deployment complete"
   '''
