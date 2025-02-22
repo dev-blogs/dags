@@ -10,29 +10,17 @@ pipeline {
   environment {
     WORKING_DIR='dags'
     CONFIG="/tmp/config"
-	SERVICE_ACCOUNT='airflow-ca'
+    SERVICE_ACCOUNT='airflow-ca'
     DOCKER_HUB_LOGIN="devblogs1"
     SERVICE_NAME="dags-deploy"
     DOCKER_IMAGE="${DOCKER_HUB_LOGIN}/${SERVICE_NAME}"
     NAMESPACE="image-uploader"
-	DOCKER_CREDENTIALS_ID = 'docker-hub-secret'
     DOCKER_HUB_PASSWORD_SECRET="docker-hub-password"
     OS_HOST="https://ocp1.192.168.1.20.nip.io:8443"
     OS_USER="dev"
     OS_PASSWORD="dev"
   }
 
-  stages {
-    stage('Login to Docker Hub') {
-      steps {
-        script {
-          withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-            sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-          }
-        }
-      }
-    }
-		
     stage('Image build') {
       steps {
         container('java-container') {
@@ -113,7 +101,13 @@ def deploy_image() {
   # Deploy the application
   /usr/bin/oc new-app --docker-image=${DOCKER_IMAGE} --name=${SERVICE_NAME} -n ${NAMESPACE} --config=${CONFIG}
   # Attach pv to container
+<<<<<<< HEAD
   /usr/bin/oc login --token=$(/usr/bin/oc serviceaccounts get-token ${SERVICE_ACCOUNT} -n ${NAMESPACE})
+=======
+  /usr/bin/oc serviceaccounts get-token ${SERVICE_ACCOUNT} -n ${NAMESPACE} > /tmp/token_file
+  SERVICE_ACCOUNT_TOKEN=$(cat /tmp/token_file)
+  /usr/bin/oc login --token=$SERVICE_ACCOUNT_TOKEN
+>>>>>>> parent of cf84c36... Pipeline fixing. Changed Jenkinsfile
   /usr/bin/oc set volume deployment/${SERVICE_NAME} --add --name=airflow-dags-volume --mount-path=/pvc/airflow/dags --claim-name=dag-pvc
   
   # Expose the service (if needed)
