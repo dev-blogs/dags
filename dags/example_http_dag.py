@@ -2,7 +2,6 @@ from airflow import DAG
 from datetime import datetime
 from airflow.operators.bash import BashOperator
 
-# Define default_args
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
