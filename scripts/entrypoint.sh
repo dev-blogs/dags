@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rsync dags /pvc/airflow/dags
+rsync dags /opt/airflow/dags
