@@ -78,14 +78,6 @@ def deploy_image() {
     docker tag ${SERVICE_NAME} ${DOCKER_HUB_LOGIN}/${SERVICE_NAME}
     docker push ${DOCKER_HUB_LOGIN}/${SERVICE_NAME}
 
-    # Check if the deployment exists
-    if /usr/bin/oc get dc --config=${CONFIG} ${SERVICE_NAME} -n ${NAMESPACE} > /dev/null 2>&1; then
-        echo "Deployment ${SERVICE_NAME} exists. Replacing it with the new deployment."
-        /usr/bin/oc delete dc ${SERVICE_NAME} -n ${NAMESPACE} --config=${CONFIG}
-    else
-        echo "Deployment ${SERVICE_NAME} does not exist. New deployment will be created."
-    fi
-
     # Check if the imagestream exists
     if /usr/bin/oc get imagestream --config=${CONFIG} ${SERVICE_NAME} -n ${NAMESPACE} > /dev/null 2>&1; then
         echo "Imagestream ${SERVICE_NAME} exists. Replacing it with the new imagestream."
