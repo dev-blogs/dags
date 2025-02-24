@@ -1,19 +1,19 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: dags-deployer-image-with-rsync
+  name: dags-deployer-image
 spec:
   replicas: 1
   selector:
-    app: dags-deployer-image-with-rsync
+    app: dags-deployer-image
   template:
     metadata:
       labels:
-        app: dags-deployer-image-with-rsync
+        app: dags-deployer-image
     spec:
       containers:
-        - name: dags-deployer-image-with-rsync
-          image: devblogs1/dags-deployer-image-with-rsync:latest
+        - name: dags-deployer-image
+          image: devblogs1/dags-deployer-image:latest
           volumeMounts:
             - name: airflow-dags-volume
               mountPath: /opt/airflow/dags
