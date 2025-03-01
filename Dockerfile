@@ -8,6 +8,4 @@ WORKDIR /usr/src
 COPY dags/* /usr/src/dags/
 COPY scripts/* /usr/src/scripts/
 
-RUN chmod 777 /usr/src/dags/*
-
 CMD ["sh", "scripts/entrypoint.sh"]
