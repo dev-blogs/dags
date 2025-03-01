@@ -38,5 +38,3 @@ with DAG(
             limits={"cpu": "500m", "memory": "512Mi"}
         ),
     )
-
-    task_in_k8s_pod
