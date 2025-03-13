@@ -14,6 +14,12 @@ default_args = {
 
 NAMESPACE = 'image-uploader'
 
+params = {
+    "src": {
+        "path": "/usr/src/data"
+    }
+}
+
 with DAG(
     dag_id='example_app_luncher_dag_ver_2.0',
     default_args=default_args,
@@ -31,7 +37,7 @@ with DAG(
         image='devblogs1/standalone-app:1.0',
         labels={"app": "airflow-task"},
         env_vars=[
-            k8s.V1EnvVar(name="SPRING_APPLICATION_JSON", value='{"src": {"path": "/usr/src/data"}}')
+            k8s.V1EnvVar(name="SPRING_APPLICATION_JSON", value='{{ dag_run.conf | tojson }}')
         ],
         volumes=[
             k8s.V1Volume(name="storage-volume", persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(claim_name="storage-pvc"))
