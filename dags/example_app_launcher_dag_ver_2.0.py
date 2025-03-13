@@ -21,6 +21,7 @@ params = {
 }
 
 with DAG(
+    params=params,
     dag_id='example_app_luncher_dag_ver_2.0',
     default_args=default_args,
     description='An example DAG which runs app in separate pod',
